@@ -1,0 +1,35 @@
+<?php 
+$productCollection = $block->getProductCollection();
+// $collection = $productCollection->setCurPage(1)->setPageSize(10);
+$collection = count($productCollection);
+echo "<table border='1' id='table'>";
+foreach ($productCollection->getData() as $product){
+	$id = $product['entity_id'];
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$image= '';
+	$product = $objectManager->create('Magento\Catalog\Model\Product')->load($id);
+	$name = $product->getName();
+	$productimages = $product->getMediaGalleryImages();
+	foreach ($productimages as $productimage) {
+		$image = $productimage['url'];
+	}
+	$price = $product->getPrice();
+	echo "<tr id='tr'>"; ?>
+	<!-- <td><img src='<?php //echo $image; ?> ' height="100px" width="100px"/></td>  -->
+	<?php 
+	if (isset($image)) {
+		if($image==""){
+			echo "<td><b><h4>No Image Available</h4></b></td>";
+		}
+		else{
+			echo "<td><img src=".$image." height='100px' width='100px'/></td>";
+		}
+	}
+	echo "<td>".$name."</td>";
+	echo "<td>".$price."</td>";
+	echo "</tr>";    
+ }
+echo "</table>";
+  ?><br><br>
+  <button id="loadMore">Load More</button>
+  <button id="showLess">Load Less</button>
