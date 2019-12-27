@@ -1,0 +1,130 @@
+/var/www/html
+
+mysql
+url: http://127.0.0.1/phpmyadmin/
+un: root
+pw: root123
+
+
+------------------
+
+
+sudo apt update && sudo apt upgrade
+sudo apt-get install tasksel
+sudo tasksel install lamp-server
+
+sudo apt install phpmyadmin
+sudo service apache2 restart
+sudo service mysql restart
+
+sudo -H gedit /etc/apache2/apache2.conf
+Include /etc/phpmyadmin/apache.conf
+sudo /etc/init.d/apache2 restart
+
+
+sudo mysql
+use mysql;
+update user set plugin='mysql_native_password' where user='root';
+update user set authentication_string=password(‘root123’) where user='root';
+flush privileges;
+Quit;
+
+OR
+mysql -u root
+mysqladmin -u root password root123
+
+sudo service mysql restart
+
+sudo sed -i "s/|\s*\((count(\$analyzed_sql_results\['select_expr'\]\)/| (\1)/g" /usr/share/phpmyadmin/libraries/sql.lib.php
+
+
+http://tipsonubuntu.com/2018/04/22/re-enable-new-document-option-ubuntu-18-04/
+touch ~/Templates/Empty\ Document
+
+
+Enable sharing
+https://itsfoss.com/share-folders-local-network-ubuntu-windows/
+
+
+sudo apt-get install php7.2-gd
+sudo apt-get install php7.2-curl php7.2-intl php7.2-zip php7.2-soap
+sudo apt install php7.2-bcmath
+
+
+
+
+Magento 2 Command
+
+=>Permission Command
+
+sudo chmod -R 777 magento2/
+
+
+=> Add new module run following command:
+
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:clean
+php bin/magento indexer:reindex
+
+
+=> Change in css/js file run following command:
+
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:clean
+
+
+
+=>Sql Commands
+
+->Export Database Command
+//Give Command From var/lib/mysql
+
+mysqldump -u [username] -p [database name] > [database name].sql
+//Export Database Save in  [var/lib/mysql]
+
+->Import Database Command
+mysql -u username -p database_name < /path/to/file.sql
+
+
+
+
+404 Not Found admin panel in magento 2
+
+/etc/apache2/apache2.conf
+
+Replace
+
+<Directory /var/www/>
+	Options Indexes FollowSymLinks
+	AllowOverride None
+	Require all granted
+</Directory> 
+
+To
+
+<Directory /var/www/html>
+	Options Indexes FollowSymLinks
+	AllowOverride All
+	Require all granted
+</Directory>
+
+url = https://magenhosting.com/tutorial/the-requested-url-was-not-found-on-this-server-after-installing-magento-2
+
+php bin/magento setup:install --base-url=http://127.0.0.1/magento/ \
+ --db-host=localhost --db-name=magento \
+ --db-user=root --db-password=root123 \
+ --admin-firstname=admin --admin-lastname=admin --admin-email=admin@gmail.com \
+ --admin-user=admin --admin-password=admin123 --language=en_US \
+ --currency=USD --timezone=America/Chicago --cleanup-database \
+ --sales-order-increment-prefix="ORD$" --session-save=db --use-rewrites=1
+
+
+Git Init Command
+-> touch vishal.php
+-> git init
+-> git add vishal.php
+-> git commit -m "first commit"
+-> git remote add origin https://github.com/Vishal431
+-> git push -u origin master
