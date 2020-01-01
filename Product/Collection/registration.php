@@ -5,4 +5,3 @@
     'Product_Collection',
     __DIR__
     );
-?>
